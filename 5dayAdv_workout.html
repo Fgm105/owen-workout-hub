@@ -248,14 +248,14 @@
 
 <div class="container">
   <div class="header">
-    <div class="title-main">Full Body 訓練計劃</div>
-        <div class="title-sub">· 訓練前請做好熱身 ·</div>
-  </div>
+    <div class="title-main">Full Body 進階訓練</div>
+    <div class="title-sub">· 訓練前請做好熱身 ·</div>
+    <div class="divider"></div>
   <div class="overview">
     <div class="badge">📅 每週 <span>5日</span></div>
     <div class="badge">🎯 體能 <span>+</span> 爆發力</div>
     <div class="badge">🏠 <span>純徒手</span> 在家可做</div>
-    <div class="badge">⏱️ 每次 <span>65-80分鐘</span></div>
+    <div class="badge">⏱️ 每次 <span>60-80分鐘</span></div>
   </div>
 
   <div class="day-tabs">
@@ -289,7 +289,7 @@
         <div class="prog-bar-label">今日進度</div>
       </div>
       <table class="ex-table">
-        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>次數</th><th>組間休息</th></tr></thead>
+        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>時間/次數</th><th>組間休息</th></tr></thead>
         <tbody id="tbody-d1"></tbody>
       </table>
     </div>
@@ -318,7 +318,7 @@
         <div class="prog-bar-label">今日進度</div>
       </div>
       <table class="ex-table">
-        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>次數</th><th>組間休息</th></tr></thead>
+        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>時間/次數</th><th>組間休息</th></tr></thead>
         <tbody id="tbody-d2"></tbody>
       </table>
     </div>
@@ -375,7 +375,7 @@
         <div class="prog-bar-label">今日進度</div>
       </div>
       <table class="ex-table">
-        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>次數</th><th>組間休息</th></tr></thead>
+        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>時間/次數</th><th>組間休息</th></tr></thead>
         <tbody id="tbody-d4"></tbody>
       </table>
     </div>
@@ -404,7 +404,7 @@
         <div class="prog-bar-label">今日進度</div>
       </div>
       <table class="ex-table">
-        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>次數</th><th>組間休息</th></tr></thead>
+        <thead><tr><th>動作 <span style="font-size:9px;color:var(--muted)">(點擊查看示範)</span></th><th>組數進度</th><th>時間/次數</th><th>組間休息</th></tr></thead>
         <tbody id="tbody-d5"></tbody>
       </table>
     </div>
@@ -515,14 +515,19 @@ function buildTables() {
       if (isTimed) iswState[swId] = { ms: 0, running: false, interval: null };
       const tr = document.createElement('tr');
       tr.id = `row-${day}-${i}`;
-      const repsCell = isTimed ? `
-        <td><span class="reps-label">${ex.reps}</span><div class="inline-sw">
-          <div class="isw-display" id="${swId}-disp">00:00</div>
-          <div class="isw-btns">
-            <button class="isw-btn isw-start" id="${swId}-btn" onclick="iswToggle('${swId}')">開始</button>
-            <button class="isw-btn isw-reset" onclick="iswReset('${swId}')">重設</button>
-          </div>
-        </div></td>` : `<td>${ex.reps}</td>`;
+      const repsCell = isTimed
+        ? `<td><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:13px;font-weight:700;">${ex.reps}</span>
+            <div class="inline-sw">
+              <div class="isw-display" id="${swId}-disp">00:00</div>
+              <div class="isw-btns">
+                <button class="isw-btn isw-start" id="${swId}-btn" onclick="iswToggle('${swId}')">開始</button>
+                <button class="isw-btn isw-reset" onclick="iswReset('${swId}')">重設</button>
+              </div>
+            </div>
+          </div></td>`
+        : `<td>${ex.reps}</td>`;
+        
       tr.innerHTML = `
         <td>
           <div class="ex-name" onclick="openDemo('${ex.name}')">${ex.name}</div>
@@ -540,21 +545,6 @@ function buildTables() {
   // Circuit Day 3
   const grid = document.getElementById('circuit-grid-d3');
   exData.d3.forEach((ex, idx) => {
-    // Insert stopwatch card between 平板支撐 (index 4) and 登山者 (index 5)
-    if (idx === 5) {
-      const swCard = document.createElement('div');
-      swCard.className = 'd3-sw-card circuit-item';
-      const d3SwId = 'd3-sw-standalone';
-      iswState[d3SwId] = { ms: 0, running: false, interval: null };
-      swCard.innerHTML = `
-        <div class="d3-sw-label">碼表</div>
-        <div class="d3-sw-display" id="${d3SwId}-disp">00:00</div>
-        <div class="d3-sw-btns">
-          <button class="isw-btn isw-start" id="${d3SwId}-btn" onclick="iswToggle('${d3SwId}')">開始</button>
-          <button class="isw-btn isw-reset" onclick="iswReset('${d3SwId}')">重設</button>
-        </div>`;
-      grid.appendChild(swCard);
-    }
     const div = document.createElement('div');
     div.className = 'circuit-item';
     div.innerHTML = `
@@ -564,6 +554,19 @@ function buildTables() {
       <button class="c-rest-btn" onclick="startRest(${ex.rest},'${ex.name}','動作間休息 ${ex.rest}秒')">⏱ 休息 ${ex.rest}s</button>`;
     grid.appendChild(div);
   });
+  // Stopwatch card at the END
+  const swCard = document.createElement('div');
+  swCard.className = 'd3-sw-card circuit-item';
+  const d3SwId = 'd3-sw-standalone';
+  iswState[d3SwId] = { ms: 0, running: false, interval: null };
+  swCard.innerHTML = `
+    <div class="d3-sw-label">碼表</div>
+    <div class="d3-sw-display" id="${d3SwId}-disp">00:00</div>
+    <div class="d3-sw-btns">
+      <button class="isw-btn isw-start" id="${d3SwId}-btn" onclick="iswToggle('${d3SwId}')">開始</button>
+      <button class="isw-btn isw-reset" onclick="iswReset('${d3SwId}')">重設</button>
+    </div>`;
+  grid.appendChild(swCard);
 }
 
 function renderDots(day, i) {
